@@ -3,6 +3,9 @@
 Autores:
 - Lawrence Javier Minguillán Van Kapel
 - Alberto Sánchez Bonastre
+  
+Los datos de entrenamiento son:
+- data.xlsx
 
 Los modelos finales son:
 - RNN encontrado con el nombre: model_rnn_40 .keras
