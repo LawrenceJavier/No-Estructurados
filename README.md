@@ -23,6 +23,15 @@ Los modelos finales son:
 
 Este documento de README tiene como objetivo proporcionar una descripción clara y concisa de la evolución de las pruebas realizadas en el código. A continuación, se describe cómo se han pasado de un RNN a embeddings y luego a un modelo de transferencia.
 
+## Interpretación de los resultados:
+
+![image](https://github.com/LawrenceJavier/No-Estructurados/assets/74473715/8067313e-e6fe-4d72-80f8-48cddec8b955)
+
+
+Los resultados obtenidos, son de esperar visto que en la red RNN ha sido entrenada con solo 5000 datos, los cuales tienen cierto sesgo. En este modelo hemos obtenido una precision total de 54%. 
+Dando paso al words embedding desarrollado, con GloVe hemos obtenido una mejor precision del modelo de un 71%. El aumento en precisión del 54% al 71% al cambiar de una RNN a GloVe puede deberse a que los vectores GloVe capturan mejor las relaciones semánticas entre las palabras, lo que permite un mejor rendimiento en ciertas tareas de NLP donde estas relaciones son importantes.
+Finalizando con el transfer Learning, el aumento en la precisión hasta un 78% al emplear BERT puede atribuirse a su capacidad para modelar relaciones semánticas y contextuales complejas en el lenguaje, aprovechando su pre-entrenamiento en corpus masivos. Al ajustar los parámetros de BERT a la tarea específica, el modelo se adapta mejor a los detalles del conjunto de datos objetivo, mejorando así su capacidad predictiva al capturar los matices del contexto y las relaciones entre las palabras con mayor precisión.
+
 
 ## Evolución de las pruebas
 
@@ -97,15 +106,6 @@ Realice algún preprocesamiento de los datos según sea necesario.
 Abra el archivo principal, indicado en el inicio del repositorio, en su editor de texto o entorno de desarrollo preferido.
 
 Configure los parámetros y opciones según sea necesario creando su respectivo entorno virtual.
-
-
-
-
-
-### Interpretación de los resultados:
-
-Los resultados obtenidos, son de esperar visto que en la red RNN el modelo lo hemos creado
-
 
 
 
