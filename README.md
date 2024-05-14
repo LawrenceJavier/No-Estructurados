@@ -34,58 +34,12 @@ El desarrollo y las pruebas del código han pasado por varias etapas, explorando
 En la primera etapa, el código incluía un modelo basado en RNN para generar recomendaciones. Este enfoque se basaba en el uso de secuencias de datos y el aprendizaje de patrones temporales en el comportamiento del usuario. Sin embargo, esta prueba inicial mostró limitaciones en términos de escalabilidad y rendimiento con conjuntos de datos grandes.
 
 
-Ejemplo de código para entrenar un modelo de RNN:
-
-``` python
-from keras.models import Sequential
-from keras.layers import LSTM, Dense
-
-model = Sequential()
-model.add(LSTM(100, input_shape=(X.shape[1], X.shape[2])))
-model.add(Dense(y.shape[1], activation='softmax'))
-model.compile(loss='categorical_crossentropy', optimizer='adam')
-model.fit(X_train, y_train, epochs=10, batch_size=32)
-```
-
 ### Prueba con embeddings:
 En la segunda etapa, se realizaron pruebas utilizando embeddings para representar los datos de entrada. Los embeddings son representaciones densas y de baja dimensionalidad que capturan características y relaciones semánticas entre los elementos. Esta prueba mostró una mejora en la escalabilidad y eficiencia en comparación con el enfoque anterior basado en RNN.
 
 
-Ejemplo de código para entrenar un modelo utilizando embeddings:
-
-``` python
-from keras.models import Sequential
-from keras.layers import Embedding, Flatten
-
-model = Sequential()
-model.add(Embedding(input_dim=num_items, output_dim=64, input_length=sequence_length))
-model.add(Flatten())
-model.add(Dense(num_items, activation='softmax'))
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam')
-model.fit(X_train, y_train, epochs=10, batch_size=32)
-```
-
-
 ### Prueba con transfer learning:
 En la etapa más reciente, se han realizado pruebas utilizando modelos de transferencia. La transferencia de aprendizaje implica reutilizar conocimientos y características aprendidos de un modelo previamente entrenado en un conjunto de datos diferente y aplicarlos a un nuevo conjunto de datos. Esta prueba demostró una mayor precisión y capacidad para capturar características relevantes en los datos.
-
-
-Ejemplo de código para utilizar un modelo de transferencia:
-
-``` python
-from keras.applications import VGG16
-from keras.models import Model
-from keras.layers import GlobalAveragePooling2D, Dense
-
-base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
-x = base_model.output
-x = GlobalAveragePooling2D()(x)
-x = Dense(1024, activation='relu')(x)
-predictions = Dense(num_classes, activation='softmax')(x)
-model = Model(inputs=base_model.input, outputs=predictions)
-model.compile(optimizer='adam', loss='categorical_crossentropy')
-model.fit(X_train, y_train, epochs=10, batch_size=32)
-```
 
 
 ## Requisitos y dependencias
@@ -119,7 +73,7 @@ A continuación se proporcionan instrucciones sobre cómo utilizar el código pa
 
 
 
-Instale Python y las bibliotecas necesarias.
+Instale Python y las bibliotecas indicadas.
 
 Clone el repositorio del código en su máquina local.
 
@@ -130,19 +84,9 @@ Clone el repositorio del código en su máquina local.
 
 
 
-Asegúrese de tener los datos de entrada en el formato adecuado.
+Asegúrese de tener los datos de entrada en el formato adecuado y localizadas en las mismas posociones que se indican en el repositorio.
 
 Realice algún preprocesamiento de los datos según sea necesario.
-
-
-
-
-### Selección del modelo:
-
-
-
-Determine qué enfoque de modelo desea utilizar: RNN, embeddings o transferencia de aprendizaje.
-
 
 
 
@@ -150,22 +94,17 @@ Determine qué enfoque de modelo desea utilizar: RNN, embeddings o transferencia
 
 
 
-Abra el archivo principal del código en su editor de texto o entorno de desarrollo preferido.
+Abra el archivo principal, indicado en el inicio del repositorio, en su editor de texto o entorno de desarrollo preferido.
 
-Configure los parámetros y opciones según sea necesario.
+Configure los parámetros y opciones según sea necesario creando su respectivo entorno virtual.
 
-Ejecute el código y espere a que se generen las recomendaciones.
 
 
 
 
 ### Interpretación de los resultados:
 
-
-
-Analice las recomendaciones generadas y evalúe su calidad y relevancia.
-
-Realice ajustes en los parámetros o en el modelo según sea necesario.
+Los resultados obtenidos, son de esperar visto que en la red RNN el modelo lo hemos creado
 
 
 
@@ -174,10 +113,19 @@ Realice ajustes en los parámetros o en el modelo según sea necesario.
 
 Es importante tener en cuenta las limitaciones del código y considerar posibles mejoras futuras:
 
+- Limitaciones
+  - Sesgo de datos: los datos utilizados para entrenar la RNN pueden tener sesgos inherentes, lo que podría afectar su capacidad para generalizar correctamente.
 
+  - Falta de información contextual: las RNN pueden tener dificultades para capturar y recordar información de contexto a largo plazo, lo que afecta su capacidad para comprender mejor el significado y el contexto detrás de las palabras en un texto.
 
-El código actual puede requerir una mayor optimización para conjuntos de datos extremadamente grandes.
-
-Las recomendaciones pueden verse afectadas por la calidad y la cantidad de los datos de entrada.
-
-Se pueden realizar mejoras adicionales en los modelos utilizados para aumentar la precisión y la relevancia de las recomendaciones.
+  - Dependencia de la calidad de los datos: la precisión de la RNN depende de la calidad y representación de los datos utilizados para entrenar.
+  - Vocabulario: Los embeddings solo representan palabras o tokens presentes en el conjunto de datos de entrenamiento. Palabras poco comunes o nuevas que no estén presentes en el conjunto de datos pueden no tener una representación adecuada en el embedding y afectar el rendimiento del modelo.
+  - Transfer Learning con BERT requiere de una gran cantidad de datos de entrenamiento para aprovechar al máximo su capacidad de aprendizaje.
+  - BERT es un modelo de lenguaje masivo con millones de parámetros, lo que lleva a un tiempo de entrenamiento considerablemente largo.
+    
+- Mejoras
+    - Utilizar arquitecturas más avanzadas como LSTM o GRU, que abordan el problema del desvanecimiento/explotación del gradiente y pueden capturar mejor la información contextual a largo plazo.
+  - Aumentar el tamaño y diversidad del conjunto de datos para minimizar el sesgo y mejorar la capacidad de generalización.
+  - Seguir experimentando con diferentes hiperparámetros
+  - En lugar de adaptar BERT directamente a dominios específicos, se pueden realizar ajustes adicionales en el modelo pre-entrenado mediante un proceso de fine-tuning específico para esos dominios.
+  - Utilizar modelos más pequeños como DistilBERT, que han sido diseñados para tener una estructura más compacta y un tiempo de entrenamiento más rápido sin perder demasiado rendimiento.
